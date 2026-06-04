@@ -15,6 +15,11 @@
 - **Cum am fixat-o și de ce:** Am schimbat `REDIS_HOST` din `localhost` în `redis`, deoarece în Docker `localhost` indică propriul container, iar comunicația se face prin numele serviciilor.
 
 
+### Problemă #3 (CI)
+- **Simptom:** Pipeline-ul CI eșua la pasul `Set up Python`.
+- **Cum am diagnosticat-o:** Am verificat log-urile de execuție din GitHub Actions (și local cu `act`) și am văzut o eroare la versiunea de Python.
+- **Cum am fixat-o și de ce:** Am actualizat versiunea de Python la 3.11 pentru compatibilitate și am adăugat un pas de instalare a dependențelor din `requirements.txt` deoarece `pytest` și librăriile aplicației nu erau prezente în mediul de rulare, CI-ul dând fail fără.
+
 ---
 
 ## 2. Healthcheck-ul adăugat
