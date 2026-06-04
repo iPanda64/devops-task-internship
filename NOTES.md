@@ -9,6 +9,12 @@
 - **Cum am diagnosticat-o:** Am rulat `docker ps` și am văzut că portul expus era 8080.
 - **Cum am fixat-o și de ce:** Am schimbat portul de host din 8080 în 8000 pentru a corespunde cerințelor.
 
+### Problemă #2 (docker-compose.yml)
+- **Simptom:** Am primit cod de eroare 500 pe endpoint-ul `/visits`.
+- **Cum am diagnosticat-o:** Am rulat `docker compose logs` și am observat `ConnectionError` către `localhost:6379` în serviciul web.
+- **Cum am fixat-o și de ce:** Am schimbat `REDIS_HOST` din `localhost` în `redis`, deoarece în Docker `localhost` indică propriul container, iar comunicația se face prin numele serviciilor.
+
+
 ---
 
 ## 2. Healthcheck-ul adăugat
