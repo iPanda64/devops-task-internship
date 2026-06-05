@@ -29,7 +29,12 @@
 
 ## 2. Healthcheck-ul adăugat
 
-**(În lucru...)**
+- **Cum funcționează:** Folosește o comandă Python `one-liner` care accesează endpoint-ul `/health`. Am folosit biblioteca standard urllib. Dacă API-ul returnează un cod de eroare (cum ar fi 503-ul implementat anterior), comanda eșuează, iar Docker marchează containerul ca `unhealthy`.
+- **De ce ai ales configurarea asta (interval, retries, timeout):**
+  - **Interval (15s):** Oferă un echilibru între monitorizarea rapidă și consumul redus de resurse.
+  - **Timeout (5s):** Suficient timp pentru un răspuns normal, dar destul de scurt pentru a detecta o aplicație blocată.
+  - **Retries (3):** Evită alertele false cauzate de mici fluctuații temporare de rețea.
+  - **Start Period (15s):** Oferă aplicației timp să pornească serverul Uvicorn înainte de prima verificare.
 
 ---
 
