@@ -33,6 +33,16 @@ def visits() -> dict:
     count = r.incr("visits")
     return {"visits": count}
 
+@app.get("/visits/count")
+def get_visits_count() -> dict:
+    count = r.get("visits")
+    return {"visits": int(count) if count else 0}
+
+@app.post("/visits/reset")
+def reset_visits() -> dict:
+    r.set("visits", 0)
+    return {"visits": 0}
+
 
 
 # # Minimal UI

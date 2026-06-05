@@ -36,3 +36,20 @@ def test_visits_increments():
         response = _client().get("/visits")
     assert response.status_code == 200
     assert response.json() == {"visits": 42}
+
+
+def test_visits_count_does_not_increment():
+    with patch("app.main.r") as mock_redis:
+        mock_redis.get.return_value = "10"
+        response = _client().get("/visits/count")
+    assert response.status_code == 200
+    assert response.json() == {"visits": 10}
+    mock_redis.incr.assert_not_called()
+
+
+def test_visits_reset():
+    with patch("app.main.r") as mock_redis:
+        response = _client().post("/visits/reset")
+    assert response.status_code == 200
+    assert response.json() == {"visits": 0}
+    mock_redis.set.assert_called_with("visits", 0)
