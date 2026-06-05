@@ -2,11 +2,16 @@ FROM python:3.11-slim
 
 WORKDIR /code
 
+RUN adduser --system --group appuser
+
 COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app/ ./app/
+COPY --chown=appuser:appuser app/ ./app/
+
 WORKDIR /code/app
+
+USER appuser
 
 EXPOSE 8000
 
