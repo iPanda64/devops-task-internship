@@ -46,7 +46,7 @@ def reset_visits() -> dict:
 # Minimal UI
 @app.get("/index", response_class=HTMLResponse)
 def index() -> str:
-    visits_count = r.get("visits") or 0
+    visits_count = visits()["visits"]
     return f"""
     <html>
         <head><title>Counter</title></head>

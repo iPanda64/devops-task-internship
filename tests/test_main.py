@@ -57,8 +57,9 @@ def test_visits_reset():
 
 def test_index_page_returns_html():
     with patch("app.main.r") as mock_redis:
-        mock_redis.get.return_value = "42"
+        mock_redis.incr.return_value = 43
         response = _client().get("/index")
     assert response.status_code == 200
-    assert "<h1>Visits: 42</h1>" in response.text
+    assert "<h1>Visits: 43</h1>" in response.text
     assert "Reset Counter" in response.text
+    mock_redis.incr.assert_called_once_with("visits")
