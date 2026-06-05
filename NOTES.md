@@ -40,8 +40,25 @@
 
 ## 3. Folosirea AI-ului
 
-**(În lucru...)**
-
+- **Ce ai folosit:** Am folosit Gemini, in special varianta GeminiCLI.
+- **Unde te-a ajutat cel mai mult:**
+  - M-a ajutat la prototiparea rapidă a ideilor de rezolvare
+  - L-am folosit pentru validarea schimbărilor înainte de commit.
+  - M-a ajutat la scrierea unor parametri/flaguri/opțiuni. Ex. flagul --system în comanda adduser pentru securitate și evitarea scrierii parolei.
+  - M-a ajutat la spell checking (scrierea diacriticelor)..
+- **Unde te-a încurcat sau ți-a dat un răspuns greșit:** (foarte interesant pentru noi!)
+  - Mi-a sugerat să creez userul abia după instalarea pachetelor cu pip. Asta ar face build-ul mai lent, pentru că Docker ar fi obligat să creeze userul din nou de fiecare dată când modific ceva în requirements.txt. Am corectat ordinea și am mutat crearea utilizatorului mai sus, ca să profit de layer caching (crearea userului nu are motiv de schimbare).
+  - Mi-a generat un pas de formatter când cream jobul de lint. Acest lucru e greșit deoarece standardele de formatare nu au fost specificate în cerințele proiectului, iar blocarea pipeline-ului pentru motive pur estetice face mai mult rău decât bine dacă acestea nu sunt un requirement.
+  - La healthcheck a recomandat folosirea curl, însă am optat pentru python pentru că imaginea folosită nu are curl instalat și am vrut să evit instalarea pachetelor suplimentare, păstrând imaginea lightweight.
+  - La healthcheck, în cod, a lăsat error code 200 chiar dacă redis era indisponibil. Eu am optat pentru codul 503 care reflectă mai corect starea aplicației.
+  - În implementarea /index, AI-ul a accesat direct baza de date Redis pentru a prelua numărul de vizite, ignorând endpoint-ul /visits. Acest bug l-am rezolvat într-un commit ulterior.
+  - A sugerat includerea comenzii pip install --upgrade pip în Dockerfile. Am optat împotriva acesteia pentru a păstra mediul cu o versiune clară, previzibilă și deterministă.
+- **Cum ai verificat ce-a generat:**
+  - Am citit mereu toate liniile de cod înainte să fie aplicate pe codebase.
+  - Am luat problemele pe rând, astfel m-am asigurat că generarea codului are impact mic.
+  - La schimbări majore de configurație (Dockerfile și docker-compose.yml), am rulat docker compose up --build -d pentru a forța reconstrucția imaginii și a verifica dacă aplicația pornește corect.
+  - Am testat local CI cu un tool local act.
+  - Endpoint-urile au fost testate cu curl și prin browser.
 ---
 
 ## 4. Ce-ai face cu mai mult timp
