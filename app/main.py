@@ -3,8 +3,6 @@
 import os
 
 import redis
-import random
-import requests
 from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse
 
