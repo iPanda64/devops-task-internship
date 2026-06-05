@@ -53,3 +53,12 @@ def test_visits_reset():
     assert response.status_code == 200
     assert response.json() == {"visits": 0}
     mock_redis.set.assert_called_with("visits", 0)
+
+
+def test_index_page_returns_html():
+    with patch("app.main.r") as mock_redis:
+        mock_redis.get.return_value = "42"
+        response = _client().get("/index")
+    assert response.status_code == 200
+    assert "<h1>Visits: 42</h1>" in response.text
+    assert "Reset Counter" in response.text
