@@ -1,5 +1,6 @@
 """Minimal smoke tests. CI runs these."""
 
+import redis
 from unittest.mock import patch
 
 from fastapi.testclient import TestClient
@@ -16,6 +17,17 @@ def test_health_endpoint_responds():
         response = _client().get("/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"
+    assert response.json()["redis"] is True
+
+
+def test_health_endpoint_reports_redis_failure():
+    with patch("app.main.r") as mock_redis:
+        mock_redis.ping.side_effect = redis.RedisError("Connection error")
+        response = _client().get("/health")
+    
+    assert response.status_code == 503
+    assert response.json()["status"] == "unhealthy"
+    assert response.json()["redis"] is False
 
 
 def test_visits_increments():

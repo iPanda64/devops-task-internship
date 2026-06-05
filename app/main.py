@@ -5,7 +5,7 @@ import os
 import redis
 import random
 import requests
-from fastapi import FastAPI
+from fastapi import FastAPI, Response
 from fastapi.responses import HTMLResponse
 
 REDIS_HOST = os.getenv("REDIS_HOST", "redis")
@@ -17,13 +17,16 @@ r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
 
 ### Bakend API endpoints
 @app.get("/health")
-def health() -> dict:
+def health(response: Response) -> dict:
     try:
         r.ping()
         redis_ok = True
+        status_text = "ok"
     except redis.RedisError:
-        redis_ok = True
-    return {"status": "ok", "redis": redis_ok}
+        status_text = "unhealthy"
+        redis_ok = False
+        response.status_code = 503
+    return {"status": status_text, "redis": redis_ok}
 
 @app.get("/visits")
 def visits() -> dict:

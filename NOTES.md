@@ -20,6 +20,11 @@
 - **Cum am diagnosticat-o:** Am verificat log-urile de execuție din GitHub Actions (și local cu `act`) și am văzut o eroare la versiunea de Python.
 - **Cum am fixat-o și de ce:** Am actualizat versiunea de Python la 3.11 pentru compatibilitate și am adăugat un pas de instalare a dependențelor din `requirements.txt` deoarece `pytest` și librăriile aplicației nu erau prezente în mediul de rulare, CI-ul dând fail fără.
 
+### Problemă #4 (app/main.py)
+- **Simptom:** Endpoint-ul `/health` raporta `{"redis": true}` chiar și atunci când Redis era oprit.
+- **Cum am diagnosticat-o:** Am citit codul din `app/main.py` și am observat că variabila `redis_ok` este mereu `True`. Am confirmat acest bug prin pornirea containerului și oprirea serviciului redis cu `docker compose stop redis`.
+- **Cum am fixat-o și de ce:** Am corectat logica de eroare pentru a returna codul HTTP 503, `{"redis": false}` și statusul `unhealthy` atunci când Redis este indisponibil, pentru a reflecta corect starea serviciului.
+
 ---
 
 ## 2. Healthcheck-ul adăugat
