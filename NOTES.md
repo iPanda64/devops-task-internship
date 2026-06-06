@@ -63,7 +63,10 @@
 
 ## 4. Ce-ai face cu mai mult timp
 
-**(În lucru...)**
+  - Aș activa persistența Redis + volum montat, ca datele să supraviețuiască restarturilor.
+  - Aș adăuga un stage de build & push imagine pe GHCR care rulează doar pe main dacă CI-ul actual este verde.
+  - Aș implementa rate limiting la nivel de aplicație prin slowapi (ex. 50 req/minut pe toate endpoint-urile).
+  - Aș extinde healthcheck-ul cu mai multe metrici relevante (ex: versiune, uptime, latency etc.).
 
 ---
 
