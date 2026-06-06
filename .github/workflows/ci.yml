@@ -12,10 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run Linter
-        uses: astral-sh/ruff-action@v1
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          args: "check ."
+          python-version: "3.11"
+
+      - name: Run Ruff
+        run: |
+          pip install ruff
+          ruff check .
 
   test:
     runs-on: ubuntu-latest
