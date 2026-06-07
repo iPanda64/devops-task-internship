@@ -73,3 +73,4 @@
 ## 5. Întrebări / observații
 
   - La pasul de linting am folosit inițial Ruff (via ruff-action), însă am schimbat la varianta cu pip install ruff după ce am observat că aceasta rulează de aproximativ 2.5 ori mai repede în acest mediu. Această variantă s-a dovedit a fi mai eficientă și decât Flake8. Un dezavantaj în CI-ul curent este duplicarea pasului de setup pentru Python, deși acest lucru ar putea fi evitat prin combinarea joburilor, am optat pentru structura actuală pentru a beneficia de paralelizarea joburilor (lint și test), reducând astfel timpul total de feedback.
+  - Înaintea pornirii, trebuie configurate variabilele de mediu cu `cp .env.example .env`.
